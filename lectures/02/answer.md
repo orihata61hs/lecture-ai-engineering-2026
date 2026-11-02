@@ -206,12 +206,44 @@ FAQ内の関連情報を返しているが、質問への回答にはなって�
 学習前はフォーマット不備およびFAQ外質問への誤回答が多数発生していたが、学習後はこれらが大幅に改善された。特にFAQ外質問に対して安易に回答せず確認要求へ誘導できるようになった点は、本学習の主要目的を概ね達成できていると評価できる。
 一方、残る失敗はFAQ内の類似情報への誤マッチであり、今後は「質問とFAQ回答の意味的対応付け」や「FAQ該当有無の判定精度」を向上させる学習データの追加が有効と考えられる。総合的には、学習効果は非常に高く、実運用に向けて有意な品質改善が確認された。
 
-
 ---
+
+## Lec02_宿題（基礎レベル）
+ lora_r：16　→　32に変更して再実行 # LoRA の行列の次元を2倍にした（小さいほど学習するパラメータが少ない）
+
+4. LoRA 学習
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'eos_token_id': 248046}.
+trainable params: 12,779,520 || all params: 765,172,544 || trainable%: 1.6701
+ [40/40 03:42, Epoch 20/20]
+Step	Training Loss
+10	1.570075
+20	0.086691
+30	0.020562
+40	0.014984
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+学習時間: 228 秒 | ステップ数: 40 | エポック: 20.0
+
+5. 学習後評価
+{"label": "after", "n": 21, "format_rate": 1.0, "content_rate": 0.9047619047619048, "both_rate": 0.9047619047619048, "seconds": 50.1}
+n	format_rate	content_rate	both_rate	seconds
+label					
+before	21	0.095238	0.000000	0.000000	24.4
+after	21	1.000000	0.904762	0.904762	50.1
+退行: []
+
+6. 知識を問う質問
+→設定変更前と同等の回答を出力
+
+7.比較評価
+
+Qwen3.5-0.8Bに対しLoRA（r=32, alpha=32, epoch=20）でFAQ応答学習を実施した結果、評価21問においてフォーマット準拠率は9.5%→100%、内容正答率は0%→90.5%へ改善した。
+また、学習前に見られたFAQ外質問への幻覚応答は大幅に減少し、多くのケースで「要確認（needs_review=true）」へ誘導できるようになった。
+一方で、「成績はいつ出ますか」「オフィスアワーは事前予約が必要ですか」の2件では近傍FAQへの誤マッチが残存しており、未知質問判定の追加学習余地が確認された。
 
 ## 演習
 
-- 使ったモデル・設定（`result.json` の `config` から）：
+- 使ったモデル・設定（`result.json` の `config` から）：Qwen/Qwen3.5-0.8B、
 - 自分で学習を実行したか（`executed_training_myself`）：はい / いいえ（実行できた範囲：　）
 - 学習前：`format_rate` =　 / `content_rate` =　
 - 学習後：`format_rate` =　 / `content_rate` =　
