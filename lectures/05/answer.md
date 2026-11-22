@@ -57,7 +57,7 @@
 
 <!-- app/config.py の変更前の値が 5 だったことを git diff app/config.py で確認し　-->
 
-'''
+```
  git diff app/config.py
 diff --git a/app/config.py b/app/config.py
 index 05a05dd..c4f4e50 100644
@@ -72,7 +72,7 @@ index 05a05dd..c4f4e50 100644
  GRAPH_START_K = 3
  GRAPH_HOPS = 2
  GRAPH_MAX_RESULTS = 10
-'''
+```
 
 - 比較した質問と、固定した条件（モデル・対象資料など）：
   - **比較した質問**：`第2回の説明では、LoRAは何を固定し何を学習しますか？ QLoRAは何を加えますか ？`
